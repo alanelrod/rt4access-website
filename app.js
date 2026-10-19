@@ -795,4 +795,18 @@
     orbitPeople = body.people || [];
     drawOrbit();
   });
+
+  const mapLinks = document.querySelectorAll(".sidebar a");
+  function showMap(id) {
+    document.querySelectorAll("[data-panel]").forEach((panel) => { panel.hidden = panel.id !== id; });
+    mapLinks.forEach((link) => { link.classList.toggle("on", link.dataset.map === id); });
+  }
+  mapLinks.forEach((link) => {
+    link.addEventListener("click", (event) => {
+      event.preventDefault();
+      showMap(link.dataset.map);
+      history.replaceState(null, "", "#" + link.dataset.map);
+    });
+  });
+  showMap(location.hash === "#company" ? "company" : "region");
 })();

@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>RT4Access — Your next opportunity is 4 people away</title>
-  <meta name="description" content="Market mapping. North Carolina’s richest 500 is the first market map. Palantir is the company map.">
+  <meta name="description" content="Market mapping. Company maps and region maps. Your next opportunity is 4 people away.">
   <meta name="theme-color" content="#100818">
   <link rel="icon" href="favicon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -22,11 +22,7 @@
           <small>Access engine</small>
         </span>
       </a>
-      <nav class="nav-links" aria-label="Maps">
-        <a href="#nc500">NC 500</a>
-        <a href="#palantir">Palantir</a>
-      </nav>
-    </div>
+      </div>
   </header>
 
   <main id="top">
@@ -38,11 +34,35 @@
       </div>
     </section>
 
-    <section class="block" id="nc500">
-      <div class="wrap">
-        <p class="kicker">Region</p>
-        <h2>The richest 500.</h2>
-        <div class="product">
+    <div class="shell">
+      <nav class="sidebar" aria-label="Maps">
+        <p class="side-label">Company maps</p>
+        <a href="#company" data-map="company">Palantir</a>
+        <p class="side-label">Region maps</p>
+        <a href="#region" data-map="region" class="on">North Carolina</a>
+      </nav>
+
+      <div class="shell-main">
+    <section class="block map-panel" id="company" data-panel="company" hidden>
+      <p class="kicker">Company maps</p>
+      <h2>A company is a market.</h2>
+      <p class="copy">Palantir is the first company map. Offices sit on orbits. Open a region, then an office, then the people on a team. The still is the product. The frame under it is the same map.</p>
+      <figure class="shot">
+        <img src="assets/product/palantir-geo.png" width="1180" height="884" alt="Palantir company map, location orbit">
+        <figcaption>Palantir · company map</figcaption>
+      </figure>
+      <div id="orbit" class="product orbit"></div>
+    </section>
+
+    <section class="block map-panel" id="region" data-panel="region">
+      <p class="kicker">Region maps</p>
+      <h2>A region is a market.</h2>
+      <p class="copy">North Carolina’s richest 500 is the first region map. Displayed estimates, searchable, grouped by industry. The still is the product. The list under it is the same map.</p>
+      <figure class="shot">
+        <img src="assets/product/nc500.png" width="1180" height="900" alt="The richest people in North Carolina">
+        <figcaption>North Carolina · richest 500</figcaption>
+      </figure>
+      <div class="product">
           <h3>The Richest People In North Carolina</h3>
           <p class="sub" id="note"></p>
           <div class="donut-wrap">
@@ -85,16 +105,9 @@
             </table>
           </div>
         </div>
-      </div>
     </section>
-
-    <section class="block" id="palantir">
-      <div class="wrap">
-        <p class="kicker">Company</p>
-        <h2>Palantir.</h2>
-        <div id="orbit" class="product orbit"></div>
       </div>
-    </section>
+    </div>
   </main>
 
   <footer class="site-footer">
