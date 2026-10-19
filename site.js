@@ -1,3 +1,8 @@
+window.rt4Track = function (name, params) {
+  if (typeof window.gtag !== "function") return;
+  window.gtag("event", name, params || {});
+};
+
 (function () {
   const toggle = document.querySelector("[data-nav-toggle]");
   const links = document.querySelector("[data-nav-links]");
@@ -38,7 +43,11 @@
       timer = window.setInterval(() => show(index + 1), 4500);
     };
     dots.forEach((dot, i) => {
-      dot.addEventListener("click", () => { show(i); start(); });
+      dot.addEventListener("click", () => {
+        show(i);
+        start();
+        window.rt4Track("demo_click", { demo_name: i === 0 ? "company_map" : "region_map" });
+      });
     });
     root.addEventListener("mouseenter", stop);
     root.addEventListener("mouseleave", start);
@@ -58,3 +67,26 @@
   }, { threshold: 0.1, rootMargin: "0px 0px -40px 0px" });
   reveals.forEach((el) => observer.observe(el));
 })();
+
+document.addEventListener("click", (event) => {
+  const link = event.target.closest("a");
+  if (!link) return;
+  const href = link.getAttribute("href") || "";
+  const label = (link.textContent || "").replace(/\s+/g, " ").trim();
+  if (href.startsWith("mailto:access@rt4access.com")) {
+    const subject = decodeURIComponent((href.match(/[?&]subject=([^&]+)/) || [])[1] || "");
+    const plan = /starter/i.test(subject) ? "starter" : /growth/i.test(subject) ? "growth" : /scale/i.test(subject) ? "scale" : "pilot";
+    window.rt4Track("contact_request", { method: "email", plan: plan });
+    return;
+  }
+  if (label === "Request a 30-Day Pilot") {
+    window.rt4Track("contact_request", { method: "pricing", plan: "pilot" });
+    return;
+  }
+  if (label === "Explore Company Maps") {
+    window.rt4Track("demo_click", { demo_name: "explore_company_maps" });
+    return;
+  }
+  if (href === "#company") window.rt4Track("demo_click", { demo_name: "open_company_map" });
+  else if (href === "#region") window.rt4Track("demo_click", { demo_name: "open_region_map" });
+});

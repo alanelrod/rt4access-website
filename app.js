@@ -749,18 +749,27 @@
       <div class="crumb">${crumbs}</div>${chart}<div class="pyramid-detail" id="orbit-detail">${detail}</div>`;
   }
 
+  function trackMap(interaction, label) {
+    if (typeof window.rt4Track !== "function") return;
+    const params = { map_name: "palantir", interaction: interaction };
+    if (label) params.map_label = String(label).slice(0, 100);
+    window.rt4Track("company_map_interaction", params);
+  }
+
   document.getElementById("orbit").addEventListener("click", (event) => {
     const crumb = event.target.closest("[data-crumb]");
     if (crumb) {
       const index = Number(crumb.dataset.crumb);
       orbitTrail = index < 0 ? [] : orbitTrail.slice(0, index + 1);
       drawOrbit();
+      trackMap("breadcrumb", index < 0 ? "Palantir" : "back");
       return;
     }
     const geo = event.target.closest("[data-geo]");
     if (geo) {
       orbitTrail = ["region:" + geo.dataset.geo];
       drawOrbit();
+      trackMap("region", geo.dataset.geo);
       return;
     }
     const office = event.target.closest("[data-office]");
@@ -770,6 +779,7 @@
       const region = regionFor(name, sample) || "Elsewhere";
       orbitTrail = ["region:" + region, "office:" + name];
       drawOrbit();
+      trackMap("office", name);
       return;
     }
     const team = event.target.closest("[data-team]");
@@ -778,6 +788,7 @@
       orbitTrail = orbitTrail.filter((step) => !step.startsWith("team:"));
       if (officeStep) orbitTrail.push("team:" + team.dataset.team);
       drawOrbit();
+      trackMap("team", team.dataset.team);
       return;
     }
     const person = event.target.closest("[data-person]");
@@ -785,6 +796,7 @@
       const found = orbitPeople.find((row) => row.name === person.dataset.person);
       const box = document.getElementById("orbit-detail");
       if (box && found) box.textContent = found.name + (found.title ? " · " + found.title : "") + (found.office ? " · " + found.office : "");
+      trackMap("person");
     }
   });
 
