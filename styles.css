@@ -105,8 +105,8 @@ nav.site-nav {
 }
 
 #hero {
-  min-height: 100vh; display: flex; align-items: center;
-  padding: 120px 48px 72px;
+  display: flex; align-items: center;
+  padding: 112px 48px 56px;
 }
 .hero-grid {
   display: grid; grid-template-columns: minmax(280px, 0.92fr) minmax(340px, 1.18fr);
@@ -261,7 +261,7 @@ footer.site-footer {
 }
 .group-panel label { display: flex; align-items: center; gap: 8px; text-transform: none; letter-spacing: 0; font-size: 14px; color: #e8eef7; padding: 6px 8px; }
 .group-rule { height: 1px; margin: 6px 8px; background: rgba(255,255,255,0.14); }
-.sheet { overflow: auto; margin-top: 14px; }
+.sheet { overflow: auto; margin-top: 14px; max-height: 560px; }
 .own { width: 100%; border-collapse: collapse; }
 .own th { letter-spacing: 0.08em; text-transform: uppercase; font-size: 11px; color: #93a4bd; text-align: left; padding: 8px 10px; }
 .own td { padding: 10px; vertical-align: top; }
