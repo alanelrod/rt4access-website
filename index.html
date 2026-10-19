@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>RT4Access — Market mapping</title>
-  <meta name="description" content="Market mapping of companies and regional markets.">
+  <title>RT4Access — Your next opportunity is 4 people away</title>
+  <meta name="description" content="Market mapping. North Carolina’s richest 500 is the first market map. Palantir is the company map.">
   <meta name="theme-color" content="#100818">
   <link rel="icon" href="favicon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -22,6 +22,10 @@
           <small>Access engine</small>
         </span>
       </a>
+      <nav class="nav-links" aria-label="Maps">
+        <a href="#nc500">NC 500</a>
+        <a href="#palantir">Palantir</a>
+      </nav>
     </div>
   </header>
 
@@ -29,44 +33,75 @@
     <section class="hero">
       <div class="wrap">
         <p class="eyebrow"><span class="diamond" aria-hidden="true"></span> RT Engine · Market maps</p>
-        <h1>Market mapping of companies and regional markets.</h1>
-        <p class="lede">A company, then the regions it sits in. Palantir is the first map.</p>
+        <h1>Your next<br>opportunity<br><em>is 4 people<br>away.</em></h1>
+        <p class="lede">Map them. North Carolina’s richest 500 is the first market map. The frames below are the product. A market can be a region or a company.</p>
       </div>
     </section>
 
-    <section class="block">
+    <section class="block" id="nc500">
       <div class="wrap">
-        <p class="kicker">A company</p>
-        <h2>Palantir.</h2>
-        <figure class="shot">
-          <img src="assets/product/company.png" alt="Palantir as a company map, with Americas, Europe, the Middle East, and Asia-Pacific">
-          <figcaption>The company</figcaption>
-        </figure>
-      </div>
-    </section>
-
-    <section class="block">
-      <div class="wrap">
-        <p class="kicker">Regional markets</p>
-        <h2>Americas and Europe.</h2>
-        <div class="pair">
-          <figure class="shot">
-            <img src="assets/product/americas.png" alt="The Americas regional market for Palantir">
-            <figcaption>Americas</figcaption>
-          </figure>
-          <figure class="shot">
-            <img src="assets/product/europe.png" alt="The Europe regional market for Palantir">
-            <figcaption>Europe</figcaption>
-          </figure>
+        <p class="kicker">Region</p>
+        <h2>The richest 500.</h2>
+        <div class="product">
+          <h3>The Richest People In North Carolina</h3>
+          <p class="sub" id="note"></p>
+          <div class="donut-wrap">
+            <div class="donut-fig">
+              <svg id="donut" viewBox="0 0 220 220" role="img" aria-label="Displayed estimates, richest first"></svg>
+              <div class="donut-center"><strong id="donut-total"></strong><span>Displayed estimates</span></div>
+            </div>
+            <ul class="donut-legend" id="legend"></ul>
+          </div>
+          <div class="rank-tools">
+            <label>Search this list
+              <input id="q" class="search" type="search" placeholder="Search this list" autocomplete="off">
+            </label>
+            <div class="group-menu">
+              <label>Group by industry
+                <button type="button" id="group-button" class="group-button" aria-expanded="false">All industries</button>
+              </label>
+              <div id="group-panel" class="group-panel" hidden>
+                <label><input type="checkbox" id="group-all" checked> All industries</label>
+                <label><input type="checkbox" id="group-headers"> Grouped</label>
+                <div class="group-rule"></div>
+                <div id="group-sectors"></div>
+              </div>
+            </div>
+          </div>
+          <div class="sheet">
+            <table class="own rank">
+              <thead>
+                <tr>
+                  <th>Rank</th>
+                  <th>Name</th>
+                  <th class="worth">Estimate</th>
+                  <th>Age</th>
+                  <th>Region</th>
+                  <th>Source</th>
+                  <th>Industry</th>
+                </tr>
+              </thead>
+              <tbody id="rows"></tbody>
+            </table>
+          </div>
         </div>
+      </div>
+    </section>
+
+    <section class="block" id="palantir">
+      <div class="wrap">
+        <p class="kicker">Company</p>
+        <h2>Palantir.</h2>
+        <div id="orbit" class="product orbit"></div>
       </div>
     </section>
   </main>
 
   <footer class="site-footer">
     <div class="wrap">
-      <p>Market mapping of companies and regional markets.</p>
+      <p>Two maps. A region, or a company. Your next opportunity is 4 people away.</p>
     </div>
   </footer>
+  <script src="app.js"></script>
 </body>
 </html>
