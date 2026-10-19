@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>RT4Access — Your next opportunity is 4 people away</title>
-  <meta name="description" content="Market mapping. Company maps and region maps. Your next opportunity is 4 people away.">
+  <meta name="description" content="Market mapping. A region or a company. North Carolina’s richest 500 is the first region map. Palantir is the first company map.">
   <meta name="theme-color" content="#100818">
   <link rel="icon" href="favicon.png?v=2">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -13,54 +13,143 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <header class="site-header">
-    <div class="wrap header-inner">
-      <a class="logo" href="#top" data-home>
-        <img class="logo-mark" src="assets/brand/rt4access.png?v=2" alt="">
-        <span>
-          <strong>RT4Access</strong>
-          <small>Access engine</small>
-        </span>
-      </a>
-      <nav class="banner" aria-label="Maps">
-        <div class="banner-item">
-          <button type="button" data-group="company" aria-expanded="false">Co. Map</button>
-          <a href="#company" data-map="company" hidden>Palantir</a>
-        </div>
-        <div class="banner-item">
-          <button type="button" data-group="region" aria-expanded="false">Region map</button>
-          <a href="#region" data-map="region" hidden>NC 500</a>
-        </div>
-      </nav>
+  <nav class="site-nav">
+    <a class="nav-brand" href="#top">
+      <img class="nav-mark" src="assets/brand/rt4access.png?v=2" width="28" height="28" alt="">
+      <span class="nav-wordmark">
+        <span class="nav-logo">RT4Access</span>
+        <span class="nav-byline">RT Engine by Solis Consulting</span>
+      </span>
+    </a>
+    <button type="button" class="nav-toggle" data-nav-toggle aria-expanded="false" aria-controls="site-nav-links">Menu</button>
+    <div class="nav-links" id="site-nav-links" data-nav-links>
+      <a href="#product">Product</a>
+      <a href="#surfaces">Surfaces</a>
+      <a href="#maps">Maps</a>
+      <a href="#insights">Insights</a>
+      <a href="mailto:access@rt4access.com" class="nav-cta">Request Access</a>
     </div>
-  </header>
+  </nav>
 
-  <main>
-    <section class="hero" id="top">
-      <div class="wrap hero-grid">
-        <div>
-          <p class="eyebrow"><span class="diamond" aria-hidden="true"></span> RT Engine · Market maps</p>
-          <h1>Your next<br>opportunity<br><em>is 4 people<br>away.</em></h1>
-          <p class="lede">Map them. North Carolina’s richest 500 is the first market map. The frames below are the product. A market can be a region or a company.</p>
+  <section id="hero">
+    <div class="hero-grid">
+      <div class="hero-copy">
+        <div class="hero-eyebrow"><img src="assets/brand/rt4access.png?v=2" width="22" height="22" alt="">RT Engine by Solis Consulting</div>
+        <h1 class="hero-headline">Your next<br>opportunity<br>is 4 people<br><em>away.</em></h1>
+        <p class="hero-sub">Map them. A market can be a region or a company. North Carolina’s richest 500 is the first region map. Palantir is the first company map.</p>
+        <div class="hero-actions">
+          <a href="mailto:access@rt4access.com" class="btn-primary">Request a walkthrough</a>
+          <a href="#product" class="btn-ghost">See the product</a>
         </div>
-        <figure class="shot hero-shot">
-          <img id="hero-img" src="assets/product/nc500.png" width="1180" height="900" alt="The richest people in North Carolina">
-          <figcaption id="hero-cap">NC 500</figcaption>
-        </figure>
+        <p class="disclaimer hero-note">Map views are the live product. Estimates are a public snapshot, not an RT4Access appraisal.</p>
       </div>
-    </section>
+      <div class="hero-carousel" data-carousel aria-roledescription="carousel" aria-label="Product views">
+        <div class="hero-carousel-frame">
+          <figure class="hero-carousel-slide is-active" data-slide>
+            <img src="assets/product/nc500.png" width="1180" height="900" alt="The richest people in North Carolina">
+            <figcaption class="hero-carousel-caption">Region map · NC 500</figcaption>
+          </figure>
+          <figure class="hero-carousel-slide" data-slide>
+            <img src="assets/product/palantir-geo.png" width="1180" height="884" alt="Palantir company map, location orbit">
+            <figcaption class="hero-carousel-caption">Company map · Palantir</figcaption>
+          </figure>
+        </div>
+        <div class="hero-carousel-dots" data-carousel-dots>
+          <button type="button" data-dot class="is-active" aria-label="Show the region map"></button>
+          <button type="button" data-dot aria-label="Show the company map"></button>
+        </div>
+      </div>
+    </div>
+  </section>
 
-    <div class="wrap">
-    <section class="block map-panel" id="company" data-panel="company" hidden>
-      <p class="kicker">Co. Map</p>
-      <h2>Palantir.</h2>
-      <div id="orbit" class="product orbit"></div>
-    </section>
+  <div class="stats-bar">
+    <div class="stat-item reveal">
+      <div class="stat-num">500</div>
+      <div class="stat-label">On the first region map</div>
+    </div>
+    <div class="stat-item reveal reveal-delay-1">
+      <div class="stat-num">$47.9B</div>
+      <div class="stat-label">Displayed estimates</div>
+    </div>
+    <div class="stat-item reveal reveal-delay-2">
+      <div class="stat-num">2,810</div>
+      <div class="stat-label">Palantir profiles</div>
+    </div>
+    <div class="stat-item reveal reveal-delay-3">
+      <div class="stat-num">2</div>
+      <div class="stat-label">Region and company</div>
+    </div>
+  </div>
 
-    <section class="block map-panel" id="region" data-panel="region" hidden>
-      <p class="kicker">Region map</p>
-      <h2>NC 500.</h2>
-      <div class="product">
+  <div id="product" class="band">
+    <div class="band-inner">
+      <div class="section-tag reveal">The product</div>
+      <h2 class="section-headline reveal">A map for<br>the market.</h2>
+      <p class="section-body reveal">RT4Access reads a market the way access actually works: who is in it, where they sit, and how far the next conversation is.</p>
+      <figure class="shot-frame reveal" style="margin-top:60px">
+        <img src="assets/product/nc500.png" width="1180" height="900" alt="The richest people in North Carolina">
+        <figcaption class="shot-caption">Region map · NC 500</figcaption>
+      </figure>
+    </div>
+  </div>
+
+  <div class="band band--steel">
+    <div class="band-inner">
+      <div class="section-tag reveal">What it does</div>
+      <h2 class="section-headline reveal">The questions a search<br>already asks.</h2>
+      <div class="concept-grid">
+        <div class="concept-card reveal">
+          <div class="concept-kicker">01 / Distance</div>
+          <h3>4 people away</h3>
+          <p>The next opportunity is a short path through people who are already on a map. The map is how you see them.</p>
+        </div>
+        <div class="concept-card reveal reveal-delay-1">
+          <div class="concept-kicker">02 / Region</div>
+          <h3>A region is a market</h3>
+          <p>North Carolina’s richest 500 is the first region map. Displayed estimates, searchable, grouped by industry.</p>
+        </div>
+        <div class="concept-card reveal reveal-delay-2">
+          <div class="concept-kicker">03 / Company</div>
+          <h3>A company is a market</h3>
+          <p>Palantir is the first company map. Offices sit on orbits. Open a region, an office, then the people on a team.</p>
+        </div>
+        <div class="concept-card reveal">
+          <div class="concept-kicker">04 / Estimate</div>
+          <h3>Labeled, not blended</h3>
+          <p>Published figures, market holdings, and modeled estimates stay named. A private row is not given a made-up net worth.</p>
+        </div>
+        <div class="concept-card reveal reveal-delay-1">
+          <div class="concept-kicker">05 / Place</div>
+          <h3>An office is a location</h3>
+          <p>A city without a listed office still sits in its region. A shared office is not a reporting line.</p>
+        </div>
+        <div class="concept-card reveal reveal-delay-2">
+          <div class="concept-kicker">06 / Open</div>
+          <h3>The same two surfaces</h3>
+          <p>Region map or company map. The next market uses the same frames. These two are the first.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="surfaces" class="band">
+    <div class="band-inner">
+      <div class="section-tag reveal">Live surfaces</div>
+      <h2 class="section-headline reveal">The same system.<br>Two markets.</h2>
+      <p class="section-body reveal">Every market runs through the same maps. A region, or a company.</p>
+      <div class="surface-stack" style="margin-top:72px">
+        <div class="surface-grid">
+          <figure class="shot-frame reveal">
+            <img src="assets/product/nc500.png" width="1180" height="900" alt="The richest people in North Carolina">
+            <figcaption class="shot-caption">Region map · NC 500</figcaption>
+          </figure>
+          <div class="surface-copy reveal">
+            <div class="section-tag">Region map</div>
+            <h3>Who is in the market.</h3>
+            <p>The richest 500 in North Carolina. A rank, an estimate, a place, and the note behind the number. Click a name for the source.</p>
+          </div>
+        </div>
+        <div class="product reveal" id="region">
           <h3>The Richest People In North Carolina</h3>
           <p class="sub" id="note"></p>
           <div class="donut-wrap">
@@ -103,15 +192,91 @@
             </table>
           </div>
         </div>
-    </section>
+        <div class="surface-grid">
+          <div class="surface-copy reveal">
+            <div class="section-tag">Company map</div>
+            <h3>Where the company sits.</h3>
+            <p>Palantir by location. Offices orbit the company. Open one and the teams are inside it. LinkedIn profiles only.</p>
+          </div>
+          <figure class="shot-frame reveal">
+            <img src="assets/product/palantir-geo.png" width="1180" height="884" alt="Palantir company map, location orbit">
+            <figcaption class="shot-caption">Company map · Palantir</figcaption>
+          </figure>
+        </div>
+        <div id="company"><div id="orbit" class="product orbit reveal"></div></div>
+      </div>
     </div>
-  </main>
+  </div>
+
+  <div id="maps" class="band band--steel">
+    <div class="band-inner">
+      <div class="section-tag reveal">Map examples</div>
+      <h2 class="section-headline reveal">A platform.<br>Not a one-market demo.</h2>
+      <p class="section-body reveal">The same two surfaces open for the next market. These frames are the live product.</p>
+      <div class="program-grid">
+        <figure class="shot-frame reveal">
+          <img src="assets/product/nc500.png" width="1180" height="900" alt="The richest people in North Carolina">
+          <figcaption class="shot-caption">North Carolina · region map</figcaption>
+        </figure>
+        <figure class="shot-frame reveal reveal-delay-1">
+          <img src="assets/product/palantir-geo.png" width="1180" height="884" alt="Palantir company map, location orbit">
+          <figcaption class="shot-caption">Palantir · company map</figcaption>
+        </figure>
+      </div>
+    </div>
+  </div>
+
+  <div id="insights" class="band">
+    <div class="band-inner">
+      <div class="section-tag reveal">Insights</div>
+      <h2 class="section-headline reveal">How the product<br>reads a market.</h2>
+      <p class="section-body reveal">What the snapshot is counting, and what a location on the company map is not.</p>
+      <div class="insight-grid">
+        <article class="insight-card reveal">
+          <time datetime="2026-10-18">October 18, 2026</time>
+          <h3>What a displayed estimate is</h3>
+          <p>Published figures, market holdings, and modeled estimates stay labeled. A rank moves when a new snapshot is published.</p>
+          <a href="#region">Open the region map</a>
+        </article>
+        <article class="insight-card reveal reveal-delay-1">
+          <time datetime="2026-10-18">October 18, 2026</time>
+          <h3>What the company map counts</h3>
+          <p>LinkedIn profiles. A city without a listed office still sits in its region. A shared office is not a reporting line.</p>
+          <a href="#company">Open the company map</a>
+        </article>
+      </div>
+    </div>
+  </div>
+
+  <div id="cta" class="band band--steel">
+    <div class="section-tag reveal">Access</div>
+    <h2 class="cta-headline reveal">See the next market.</h2>
+    <p class="cta-sub reveal">Walkthroughs are scheduled. The two maps on this page are the live product.</p>
+    <div class="cta-actions reveal">
+      <a href="mailto:access@rt4access.com" class="btn-primary">Request a walkthrough</a>
+      <a href="#surfaces" class="btn-ghost">See the product</a>
+    </div>
+  </div>
 
   <footer class="site-footer">
-    <div class="wrap">
-      <p>Two maps. A region, or a company. Your next opportunity is 4 people away.</p>
+    <div class="footer-left">
+      <a class="footer-logo" href="#top">
+        <img class="brand-mark" src="assets/brand/rt4access.png?v=2" width="28" height="28" alt="">
+        <span class="footer-wordmark">
+          <span class="footer-logo-name">RT4Access</span>
+          <span class="footer-byline">RT Engine by Solis Consulting</span>
+        </span>
+      </a>
+      <div class="footer-tagline">Your next opportunity is 4 people away</div>
     </div>
+    <a class="footer-parent" href="https://solisconsultinggroup.com/" target="_blank" rel="noopener noreferrer">
+      <img class="brand-mark brand-mark--solis" src="assets/brand/solis-consulting.png" width="22" height="22" alt="">
+      <span>Solis Consulting</span>
+    </a>
+    <div class="footer-legal">© 2026 RT4Access. All rights reserved.</div>
   </footer>
+
+  <script src="site.js"></script>
   <script src="app.js"></script>
 </body>
 </html>
