@@ -17,7 +17,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=8">
+  <link rel="stylesheet" href="styles.css?v=9">
 </head>
 <body>
   <nav class="site-nav">
@@ -34,7 +34,7 @@
       <a href="#company">Company maps</a>
       <a href="#pricing">Pricing</a>
       <a href="#motion">Motion</a>
-      <a href="#pricing" class="nav-cta">Request a 30-Day Pilot</a>
+      <a href="#pilot" class="nav-cta">Request a 30-Day Pilot</a>
     </div>
   </nav>
 
@@ -47,7 +47,7 @@
         <p class="hero-sub hero-sub-2">The location orbit is free. A 30-day pilot adds the enriched LinkedIn graph and the CRM tools.</p>
         <div class="hero-actions">
           <a href="#company" class="btn-primary">Explore Company Maps</a>
-          <a href="#pricing" class="btn-ghost">Request a 30-Day Pilot</a>
+          <a href="#pilot" class="btn-ghost">Request a 30-Day Pilot</a>
         </div>
         <p class="disclaimer hero-note">Batch 1. The location orbit for each company we track.</p>
       </div>
@@ -226,31 +226,76 @@
           <p class="price">$5,000</p>
           <p>5 companies</p>
           <p>30 days</p>
-          <a href="mailto:access@rt4access.com?subject=Starter%2030-day%20pilot">Request this pilot</a>
+          <a href="#pilot" data-plan="starter">Request this pilot</a>
         </article>
         <article class="price-card reveal reveal-delay-1">
           <h3>Growth</h3>
           <p class="price">$7,500</p>
           <p>10 companies</p>
           <p>30 days</p>
-          <a href="mailto:access@rt4access.com?subject=Growth%2030-day%20pilot">Request this pilot</a>
+          <a href="#pilot" data-plan="growth">Request this pilot</a>
         </article>
         <article class="price-card reveal reveal-delay-2">
           <h3>Scale</h3>
           <p class="price">$10,000</p>
           <p>20 companies</p>
           <p>30 days</p>
-          <a href="mailto:access@rt4access.com?subject=Scale%2030-day%20pilot">Request this pilot</a>
+          <a href="#pilot" data-plan="scale">Request this pilot</a>
         </article>
         <article class="price-card reveal reveal-delay-3">
           <h3>Enterprise</h3>
           <p class="price">Custom</p>
           <p>Scope by agreement</p>
           <p>Companies, seats, term</p>
-          <a href="mailto:access@rt4access.com?subject=Custom%20enterprise%20scope">Request this scope</a>
+          <a href="#pilot" data-plan="enterprise">Request this scope</a>
         </article>
       </div>
       <p class="price-note reveal">All pilots include one customer organization, the enriched LinkedIn graph, and the CRM tools for the companies you select. Define refresh frequency and user seats in the agreement.</p>
+      <form id="pilot" class="pilot reveal" data-endpoint="https://pilot-api-production-7e07.up.railway.app/pilots" novalidate>
+        <div class="section-tag">Request a 30-day pilot</div>
+        <h2 class="section-headline">Who, which plan,<br>which companies.</h2>
+        <ol class="pilot-progress" data-pilot-progress>
+          <li class="on">You</li>
+          <li>Plan</li>
+          <li>Companies</li>
+        </ol>
+        <div class="pilot-step" data-pilot-step="1">
+          <label>Name<input name="name" autocomplete="name" required maxlength="120" placeholder="Alan Solis Elrod"></label>
+          <label>Email<input name="email" type="email" autocomplete="email" required maxlength="160" placeholder="you@company.com"></label>
+          <label>Organization<input name="organization" autocomplete="organization" required maxlength="160" placeholder="Solis Consulting"></label>
+        </div>
+        <div class="pilot-step" data-pilot-step="2" hidden>
+          <fieldset>
+            <legend>Which plan?</legend>
+            <label class="pilot-choice"><input type="radio" name="plan" value="starter" required><span><strong>Starter</strong> $5,000 · 5 companies · 30 days</span></label>
+            <label class="pilot-choice"><input type="radio" name="plan" value="growth"><span><strong>Growth</strong> $7,500 · 10 companies · 30 days</span></label>
+            <label class="pilot-choice"><input type="radio" name="plan" value="scale"><span><strong>Scale</strong> $10,000 · 20 companies · 30 days</span></label>
+            <label class="pilot-choice"><input type="radio" name="plan" value="enterprise"><span><strong>Enterprise</strong> Custom · scope by agreement</span></label>
+          </fieldset>
+        </div>
+        <div class="pilot-step" data-pilot-step="3" hidden>
+          <fieldset>
+            <legend>Which companies?</legend>
+            <div class="pilot-companies">
+              <label class="pilot-choice"><input type="checkbox" name="companies" value="anduril"><span>Anduril</span></label>
+              <label class="pilot-choice"><input type="checkbox" name="companies" value="anthropic"><span>Anthropic</span></label>
+              <label class="pilot-choice"><input type="checkbox" name="companies" value="mistral"><span>Mistral AI</span></label>
+              <label class="pilot-choice"><input type="checkbox" name="companies" value="openai"><span>OpenAI</span></label>
+              <label class="pilot-choice"><input type="checkbox" name="companies" value="palantir"><span>Palantir</span></label>
+              <label class="pilot-choice"><input type="checkbox" name="companies" value="xai"><span>xAI</span></label>
+            </div>
+            <label>Other companies<textarea name="other_companies" maxlength="400" placeholder="Name any company outside Batch 1"></textarea></label>
+          </fieldset>
+        </div>
+        <label class="pilot-hp">Website<input name="website" tabindex="-1" autocomplete="off"></label>
+        <p class="pilot-error" data-pilot-error hidden></p>
+        <div class="pilot-actions">
+          <button type="button" class="btn-ghost" data-pilot-back hidden>Back</button>
+          <button type="button" class="btn-primary" data-pilot-next>Continue</button>
+          <button type="submit" class="btn-primary" data-pilot-send hidden>Send request</button>
+        </div>
+        <p class="pilot-done" data-pilot-done hidden>Request received. We’ll use this to set up the 30-day pilot.</p>
+      </form>
     </div>
   </div>
 
@@ -282,7 +327,7 @@
     <p class="cta-sub reveal">The location orbit is free. A 30-day pilot adds the enriched LinkedIn graph and the CRM tools.</p>
     <div class="cta-actions reveal">
       <a href="#company" class="btn-primary">Explore Company Maps</a>
-      <a href="#pricing" class="btn-ghost">Request a 30-Day Pilot</a>
+      <a href="#pilot" class="btn-ghost">Request a 30-Day Pilot</a>
     </div>
   </div>
 
@@ -304,7 +349,7 @@
     <div class="footer-legal">© 2026 RT4Access. All rights reserved.</div>
   </footer>
 
-  <script src="site.js?v=3"></script>
+  <script src="site.js?v=4"></script>
   <script src="app.js?v=6"></script>
 </body>
 </html>

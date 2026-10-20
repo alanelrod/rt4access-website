@@ -179,6 +179,34 @@ nav.site-nav {
   letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); text-decoration: none;
 }
 .price-note { margin-top: 28px; max-width: 72ch; color: var(--muted); }
+.pilot { margin-top: 56px; max-width: 720px; scroll-margin-top: 96px; }
+.pilot .section-headline { font-size: clamp(36px, 4vw, 56px); }
+.pilot-progress { display: flex; gap: 18px; list-style: none; padding: 0; margin: 28px 0 22px; }
+.pilot-progress li {
+  font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted);
+}
+.pilot-progress li.on { color: var(--accent); }
+.pilot-step, .pilot fieldset { display: grid; gap: 14px; border: 0; padding: 0; margin: 0; }
+.pilot legend { font-size: 18px; color: var(--bright); margin-bottom: 4px; }
+.pilot label { display: grid; gap: 8px; color: var(--muted); font-size: 13px; }
+.pilot input[type="text"], .pilot input[type="email"], .pilot input:not([type]), .pilot textarea {
+  width: 100%; font: inherit; color: var(--bright); background: var(--panel-data);
+  border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px;
+}
+.pilot textarea { min-height: 88px; resize: vertical; }
+.pilot input:focus, .pilot textarea:focus { outline: 1px solid var(--accent); border-color: var(--accent); }
+.pilot-companies { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.pilot-choice {
+  display: flex; align-items: center; gap: 10px; padding: 12px 14px;
+  border: 1px solid var(--border); border-radius: 10px; color: var(--text); cursor: pointer;
+}
+.pilot-choice strong { color: var(--bright); font-weight: 600; margin-right: 8px; }
+.pilot-choice:has(input:checked) { border-color: var(--accent); color: var(--bright); }
+.pilot-actions { display: flex; gap: 12px; margin-top: 18px; }
+.pilot button { cursor: pointer; font: inherit; }
+.pilot-error { color: #f0b4c8; margin: 14px 0 0; }
+.pilot-done { margin-top: 18px; color: var(--bright); }
+.pilot-hp { position: absolute; left: -10000px; height: 0; overflow: hidden; }
 .concept-grid { grid-template-columns: repeat(3, 1fr); }
 .surface-grid { grid-template-columns: 1.2fr 1fr; gap: 32px; align-items: center; }
 .batch-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; margin-top: 48px; }
@@ -324,7 +352,7 @@ footer.site-footer {
   }
   .nav-links.is-open { display: flex; }
   #hero, .band, .stats-bar { padding-left: 20px; padding-right: 20px; }
-  .hero-grid, .concept-grid, .surface-grid, .program-grid, .insight-grid, .price-grid, .motion, .batch-grid { grid-template-columns: 1fr; }
+  .hero-grid, .concept-grid, .surface-grid, .program-grid, .insight-grid, .price-grid, .motion, .batch-grid, .pilot-companies { grid-template-columns: 1fr; }
   .hero-grid { gap: 36px; }
   .stats-bar { grid-template-columns: repeat(2, 1fr); padding-top: 24px; padding-bottom: 24px; gap: 20px 0; }
   .stat-item { padding: 0 12px 12px 0; border-right: none; }
