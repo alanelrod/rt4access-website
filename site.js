@@ -46,7 +46,7 @@ window.rt4Track = function (name, params) {
       dot.addEventListener("click", () => {
         show(i);
         start();
-        window.rt4Track("demo_click", { demo_name: i === 0 ? "company_map" : "region_map" });
+        window.rt4Track("demo_click", { demo_name: dot.getAttribute("data-demo") || "company_map" });
       });
     });
     root.addEventListener("mouseenter", stop);
@@ -69,6 +69,8 @@ window.rt4Track = function (name, params) {
 })();
 
 document.addEventListener("click", (event) => {
+  const shot = event.target.closest("[data-company]");
+  if (shot) window.rt4Track("company_map_interaction", { map_name: shot.getAttribute("data-company"), interaction: "orbit" });
   const link = event.target.closest("a");
   if (!link) return;
   const href = link.getAttribute("href") || "";
