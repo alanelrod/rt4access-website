@@ -452,24 +452,29 @@
     rowByPos.set(person.position, { row, detail });
   }
 
-  q.addEventListener("input", render);
-  groupButton.addEventListener("click", () => {
-    const open = groupPanel.hidden;
-    groupPanel.hidden = !open;
-    groupButton.setAttribute("aria-expanded", open ? "true" : "false");
-  });
-  groupAll.addEventListener("change", () => {
-    selectedSectors.clear();
-    syncGroupChecks();
-    render();
-  });
-  groupHeaders.addEventListener("change", render);
-  document.addEventListener("click", (event) => {
-    if (!event.target.closest(".group-menu")) {
-      groupPanel.hidden = true;
-      groupButton.setAttribute("aria-expanded", "false");
-    }
-  });
+  if (q && groupButton && groupAll && groupHeaders && groupPanel && rowsEl) {
+    q.addEventListener("input", render);
+    groupButton.addEventListener("click", () => {
+      const open = groupPanel.hidden;
+      groupPanel.hidden = !open;
+      groupButton.setAttribute("aria-expanded", open ? "true" : "false");
+    });
+    groupAll.addEventListener("change", () => {
+      selectedSectors.clear();
+      syncGroupChecks();
+      render();
+    });
+    groupHeaders.addEventListener("change", render);
+    document.addEventListener("click", (event) => {
+      if (!event.target.closest(".group-menu")) {
+        groupPanel.hidden = true;
+        groupButton.setAttribute("aria-expanded", "false");
+      }
+    });
+    fetch("data/nc500.json").then((res) => res.json()).then((body) => {
+      showRanking(body.people, body.headline);
+    });
+  }
 
   function showRanking(list, headline) {
     ranked = list;
@@ -502,20 +507,32 @@
     render();
   }
 
-  const GEO_REGIONS = [
-    ["Americas", "#60a5fa", ["New York", "Washington", "Palo Alto", "Seattle", "Chicago", "Denver", "Aventura", "Ottawa"], 300, 390],
-    ["Europe", "#34d399", ["London", "Paris", "Madrid", "Munich", "Amsterdam", "Copenhagen", "Oslo", "Stockholm", "Rome", "Zurich", "Warsaw"], 860, 220],
+  const PALANTIR_REGIONS = [
+    ["Americas", "#60a5fa", ["San Francisco", "New York", "Washington", "Palo Alto", "Seattle", "Chicago", "Denver", "Aventura", "Ottawa", "Austin", "Costa Mesa"], 300, 390],
+    ["Europe", "#34d399", ["London", "Dublin", "Paris", "Brussels", "Madrid", "Munich", "Amsterdam", "Copenhagen", "Oslo", "Stockholm", "Rome", "Zurich", "Warsaw"], 860, 220],
     ["Middle East", "#fbbf24", ["Tel Aviv", "Abu Dhabi", "Doha"], 1360, 360],
-    ["Asia-Pacific", "#f472b6", ["Tokyo", "Seoul", "Sydney", "Canberra"], 1280, 800],
+    ["Asia-Pacific", "#f472b6", ["Tokyo", "Singapore", "Seoul", "Sydney", "Canberra"], 1280, 800],
   ];
+  let geoRegions = PALANTIR_REGIONS;
   const REGION_MARKERS = [
     ["Americas", ["united states", "canada", "greater boston", "greater houston", "greater milwaukee"]],
-    ["Europe", ["united kingdom", "england", "scotland", "wales", "france", "italy", "germany", "spain", "netherlands", "poland", "lithuania", "luxembourg", "switzerland", "vilniaus", "sweden", "norway", "denmark"]],
+    ["Europe", ["united kingdom", "england", "scotland", "wales", "ireland", "belgium", "france", "italy", "germany", "spain", "netherlands", "poland", "lithuania", "luxembourg", "switzerland", "vilniaus", "sweden", "norway", "denmark"]],
     ["Middle East", ["united arab emirates", "israel", "qatar"]],
-    ["Asia-Pacific", ["australia", "india", "japan", "korea", "karnataka", "haryana"]],
+    ["Asia-Pacific", ["australia", "india", "japan", "singapore", "korea", "karnataka", "haryana"]],
+  ];
+  const MAPS = [
+    { slug: "palantir", file: "data/palantir.json", name: "Palantir" },
+    { slug: "anthropic", file: "data/anthropic.json", name: "Anthropic" },
+    { slug: "openai", file: "data/openai.json", name: "OpenAI" },
+    { slug: "xai", file: "data/xai.json", name: "xAI" },
+    { slug: "anduril", file: "data/anduril.json", name: "Anduril" },
+    { slug: "mistral", file: "data/mistral.json", name: "Mistral AI" },
   ];
   let orbitPeople = [];
   let orbitTrail = [];
+  let mapId = "palantir";
+  let mapName = "Palantir";
+  let mapNote = "";
 
   function bucketOf(row) {
     if (row.office) return row.office;
@@ -523,7 +540,7 @@
     return "No location";
   }
   function regionFor(name, row) {
-    const home = GEO_REGIONS.find((region) => region[2].includes(name));
+    const home = geoRegions.find((region) => region[2].includes(name));
     if (home) return home[0];
     if (name === "No location" || name === "Headquarters" || name === "Remote" || name === "HQ") return "";
     const text = String((row && row.location) || name).toLowerCase();
@@ -541,7 +558,7 @@
     return buckets;
   }
   function regionGroups(buckets) {
-    const groups = new Map(GEO_REGIONS.map((region) => [region[0], []]));
+    const groups = new Map(geoRegions.map((region) => [region[0], []]));
     const elsewhere = [];
     buckets.forEach((rows, name) => {
       const region = regionFor(name, rows[0]);
@@ -597,17 +614,17 @@
     const width = 1600;
     const height = 1080;
     const sun = { x: 800, y: 540, r: 46 };
-    const clusters = GEO_REGIONS.map((region) => ({
+    const clusters = geoRegions.map((region) => ({
       name: region[0],
       color: region[1],
       names: regionNames(region, buckets, groups, true),
       count: regionCount(region, buckets, groups),
       x: region[3],
       y: region[4],
-    }));
+    })).filter((cluster) => cluster.count > 0);
     const elseCount = elsewhere.reduce((sum, name) => sum + (buckets.get(name) || []).length, 0);
     const elseNames = elsewhere.slice().sort((a, b) => buckets.get(b).length - buckets.get(a).length).slice(0, 8);
-    clusters.push({ name: "Elsewhere", color: "#94a3b8", names: elseNames, count: elseCount, x: 340, y: 860 });
+    if (elseCount) clusters.push({ name: "Elsewhere", color: "#94a3b8", names: elseNames, count: elseCount, x: 340, y: 860 });
     const rings = clusters.map((cluster) => {
       const coreR = Math.max(34, cluster.name.length * 4.1, massRadius(cluster.count) + 10);
       const orbit = clusterOrbit(cluster.names, buckets, coreR);
@@ -622,7 +639,7 @@
         + planet(cluster.name, { x: cluster.x, y: cluster.y, r: coreR }, cluster.count, cluster.color, `data-geo="${attr(cluster.name)}" role="button" tabindex="0"`, true, true);
     }).join("");
     const core = `<circle cx="${sun.x}" cy="${sun.y}" r="${sun.r}" fill="#0c2340" stroke="#f8fafc" stroke-width="1.5"></circle>
-      <text x="${sun.x}" y="${sun.y + 4}" text-anchor="middle" fill="#f8fafc" font-size="13">Palantir</text>`;
+      <text x="${sun.x}" y="${sun.y + 4}" text-anchor="middle" fill="#f8fafc" font-size="13">${esc(clip(mapName, 16))}</text>`;
     return solarFrame(width, height, "Office clusters", rings + core);
   }
   function regionSolar(name, color, names, buckets) {
@@ -679,16 +696,27 @@
     const outer = 110 + Math.max(0, ring - 1) * 48;
     return solarFrame(width, Math.max(height, outer * 2 + 80), title, rings + moons + core);
   }
+  function teamName(row) {
+    const label = String(row.team || "").trim();
+    if (!label || /^(no team|no public team|none|n\/a|other)$/i.test(label)) return "";
+    return label;
+  }
   function officeSolar(office, members) {
     const teams = new Map();
+    const loose = [];
     members.forEach((row) => {
-      const label = row.team || "No public team";
+      const label = teamName(row);
+      if (!label) {
+        loose.push(row);
+        return;
+      }
       const list = teams.get(label) || [];
       list.push(row);
       teams.set(label, list);
     });
     const ordered = [...teams.entries()].sort((a, b) => b[1].length - a[1].length || a[0].localeCompare(b[0]));
-    if (ordered.length <= 1) return peopleSolar(office, office, members);
+    if (!ordered.length) return peopleSolar(office, office, members);
+    const looseChart = loose.length ? peopleSolar(office, office, loose) : "";
     const rings = [];
     let cursor = 0;
     let ring = 0;
@@ -712,7 +740,7 @@
       }).join("");
     }).join("");
     const core = planet(office, sun, members.length, "#f8fafc", "", true, true);
-    return solarFrame(size, size, office, moons + core);
+    return solarFrame(size, size, office, moons + core) + looseChart;
   }
 
   function drawOrbit() {
@@ -723,7 +751,7 @@
     const officeStep = orbitTrail.find((step) => step.startsWith("office:"));
     const teamStep = orbitTrail.find((step) => step.startsWith("team:"));
     const stepLabel = (step) => step.replace(/^(region|office|team):/, "");
-    const crumbs = [`<button type="button" data-crumb="-1" class="${orbitTrail.length ? "" : "on"}">Palantir</button>`]
+    const crumbs = [`<button type="button" data-crumb="-1" class="${orbitTrail.length ? "" : "on"}">${esc(mapName)}</button>`]
       .concat(orbitTrail.map((step, index) => `<button type="button" data-crumb="${index}" class="${index === orbitTrail.length - 1 ? "on" : ""}">${esc(stepLabel(step))}</button>`))
       .join("");
     let chart = "";
@@ -731,38 +759,39 @@
     if (officeStep && teamStep) {
       const office = officeStep.slice(7);
       const team = teamStep.slice(5);
-      const members = (buckets.get(office) || []).filter((row) => (row.team || "No public team") === team);
+      const members = (buckets.get(office) || []).filter((row) => teamName(row) === team);
       chart = peopleSolar(team, office, members);
     } else if (officeStep) {
       const office = officeStep.slice(7);
       chart = officeSolar(office, buckets.get(office) || []);
     } else if (regionStep) {
       const name = regionStep.slice(7);
-      const region = GEO_REGIONS.find((item) => item[0] === name);
+      const region = geoRegions.find((item) => item[0] === name);
       const names = region ? regionNames(region, buckets, groups, false) : elsewhere;
       chart = regionSolar(name, region ? region[1] : "#94a3b8", names, buckets);
     } else {
       chart = companySolar(buckets, groups, elsewhere);
     }
     const withOffice = orbitPeople.filter((row) => row.office && row.office !== "Headquarters").length;
-    host.innerHTML = `<p class="pyramid-note">${orbitPeople.length.toLocaleString()} LinkedIn profiles. A city without a listed office still sits in its region. A shared office is not a reporting line. ${withOffice.toLocaleString()} match a listed office.</p>
+    const note = mapNote || `${orbitPeople.length.toLocaleString()} people on the public map. A city without a listed office still sits in its region. A shared office is not a reporting line. ${withOffice.toLocaleString()} match a listed office.`;
+    host.innerHTML = `<p class="pyramid-note">${esc(note)}</p>
       <div class="crumb">${crumbs}</div>${chart}<div class="pyramid-detail" id="orbit-detail">${detail}</div>`;
   }
 
   function trackMap(interaction, label) {
     if (typeof window.rt4Track !== "function") return;
-    const params = { map_name: "palantir", interaction: interaction };
+    const params = { map_name: mapId, interaction: interaction };
     if (label) params.map_label = String(label).slice(0, 100);
     window.rt4Track("company_map_interaction", params);
   }
 
-  document.getElementById("orbit").addEventListener("click", (event) => {
+  function onOrbitClick(event) {
     const crumb = event.target.closest("[data-crumb]");
     if (crumb) {
       const index = Number(crumb.dataset.crumb);
       orbitTrail = index < 0 ? [] : orbitTrail.slice(0, index + 1);
       drawOrbit();
-      trackMap("breadcrumb", index < 0 ? "Palantir" : "back");
+      trackMap("breadcrumb", index < 0 ? mapName : "back");
       return;
     }
     const geo = event.target.closest("[data-geo]");
@@ -795,16 +824,45 @@
     if (person) {
       const found = orbitPeople.find((row) => row.name === person.dataset.person);
       const box = document.getElementById("orbit-detail");
-      if (box && found) box.textContent = found.name + (found.title ? " · " + found.title : "") + (found.office ? " · " + found.office : "");
+      if (box && found) box.textContent = [found.name, found.title, found.office].filter(Boolean).join(" · ");
       trackMap("person");
     }
-  });
+  }
 
-  fetch("data/nc500.json").then((res) => res.json()).then((body) => {
-    showRanking(body.people, body.headline);
-  });
-  fetch("data/palantir.json").then((res) => res.json()).then((body) => {
-    orbitPeople = body.people || [];
-    drawOrbit();
-  });
+  const companyMaps = Object.fromEntries(MAPS.map((map) => [map.slug, map.file]));
+
+  function showMap(id) {
+    const file = companyMaps[id];
+    if (!file) return;
+    mapId = id;
+    document.querySelectorAll("[data-map]").forEach((button) => {
+      button.classList.toggle("on", button.dataset.map === id);
+    });
+    fetch(file).then((res) => {
+      if (!res.ok) throw new Error(file);
+      return res.json();
+    }).then((body) => {
+      orbitPeople = body.people || [];
+      mapName = body.name || id;
+      mapNote = body.note || (body.coverage && body.coverage.note) || "";
+      geoRegions = Array.isArray(body.regions) && body.regions.length
+        ? body.regions.map((region) => [region.name, region.color, region.offices || [], region.x, region.y])
+        : PALANTIR_REGIONS;
+      orbitTrail = [];
+      drawOrbit();
+    });
+  }
+
+  const orbitHost = document.getElementById("orbit");
+  const mapSwitch = document.getElementById("map-switch");
+  if (orbitHost && mapSwitch) {
+    orbitHost.addEventListener("click", onOrbitClick);
+    mapSwitch.addEventListener("click", (event) => {
+      const button = event.target.closest("[data-map]");
+      if (!button || button.dataset.map === mapId) return;
+      showMap(button.dataset.map);
+      trackMap("company", button.dataset.map);
+    });
+    showMap("openai");
+  }
 })();

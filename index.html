@@ -174,8 +174,19 @@
     <div class="band-inner">
       <div class="section-tag reveal">Batch 1</div>
       <h2 class="section-headline reveal">Six companies.<br>One orbit each.</h2>
-      <p class="section-body reveal">The location orbit for Anduril, Anthropic, Mistral AI, OpenAI, Palantir, and xAI. A profile without a listed city sits in Elsewhere.</p>
-      <div class="batch-grid" id="company">
+      <p class="section-body reveal">Open any company. A profile without a listed city sits in Elsewhere. A person with no team is on the office, with no extra folder.</p>
+      <div id="company" class="live-maps reveal">
+        <div class="crumb map-switch" id="map-switch">
+          <button type="button" data-map="anduril">Anduril</button>
+          <button type="button" data-map="anthropic">Anthropic</button>
+          <button type="button" data-map="mistral">Mistral AI</button>
+          <button type="button" data-map="openai" class="on">OpenAI</button>
+          <button type="button" data-map="palantir">Palantir</button>
+          <button type="button" data-map="xai">xAI</button>
+        </div>
+        <div id="orbit" class="product orbit"></div>
+      </div>
+      <div class="batch-grid">
         <figure class="shot-frame reveal" data-company="anduril">
           <img src="assets/product/batch1-anduril.jpg" width="1270" height="972" alt="Anduril location orbit">
           <figcaption class="shot-caption">Anduril · 5,044 verified · 5,221 on the public org chart</figcaption>
@@ -294,5 +305,6 @@
   </footer>
 
   <script src="site.js?v=3"></script>
+  <script src="app.js?v=6"></script>
 </body>
 </html>
