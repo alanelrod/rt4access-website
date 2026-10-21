@@ -172,12 +172,15 @@ nav.site-nav {
   border-radius: var(--radius); padding: 28px 26px;
 }
 .price-card h3 { font-size: 14px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); font-weight: 600; }
-.price-card .price { margin: 14px 0 8px; font-size: 40px; font-weight: 600; letter-spacing: -0.04em; color: var(--bright); line-height: 1; }
+.price-card .price { margin: 14px 0 8px; font-size: clamp(28px, 2.6vw, 40px); font-weight: 600; letter-spacing: -0.04em; color: var(--bright); line-height: 1; }
 .price-card p { color: var(--muted); }
 .price-card a {
   display: inline-block; margin-top: 18px; font-family: var(--mono); font-size: 11px;
   letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); text-decoration: none;
 }
+.universe { display: grid; gap: 16px; margin-top: 36px; max-width: 78ch; }
+.universe h3 { font-size: 16px; color: var(--bright); font-weight: 600; margin-bottom: 4px; }
+.universe p { color: var(--muted); }
 .price-note { margin-top: 28px; max-width: 72ch; color: var(--muted); }
 .pilot { margin-top: 56px; max-width: 720px; scroll-margin-top: 96px; }
 .pilot .section-headline { font-size: clamp(36px, 4vw, 56px); }

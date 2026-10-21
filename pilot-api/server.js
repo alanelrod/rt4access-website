@@ -8,7 +8,7 @@ const ORIGINS = new Set([
   "http://127.0.0.1:8754",
   "http://localhost:8754",
 ]);
-const PLANS = new Set(["starter", "growth", "scale", "enterprise"]);
+const PLANS = new Set(["frontier", "frontier-plus", "enterprise", "strategic", "starter", "growth", "scale"]);
 const COMPANIES = ["anduril", "anthropic", "mistral", "openai", "palantir", "xai"];
 const COMPANY_SET = new Set(COMPANIES);
 const hits = new Map();
