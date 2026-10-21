@@ -139,7 +139,7 @@ nav.site-nav {
 }
 .hero-eyebrow img { width: 22px; height: 22px; max-width: 22px; object-fit: contain; }
 .hero-headline {
-  font-size: clamp(40px, 5.2vw, 68px); font-weight: 600; line-height: 1.02;
+  font-size: clamp(36px, 3.4vw, 52px); font-weight: 600; line-height: 1.05;
   letter-spacing: -0.04em; color: var(--bright); max-width: 14em;
 }
 .hero-sub-2 { margin-top: 14px; }

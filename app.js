@@ -844,7 +844,7 @@
     }).then((body) => {
       orbitPeople = body.people || [];
       mapName = body.name || id;
-      mapNote = body.note || (body.coverage && body.coverage.note) || "";
+      mapNote = (body.note || (body.coverage && body.coverage.note) || "").replace(/verified employees/g, "sourced profiles");
       geoRegions = Array.isArray(body.regions) && body.regions.length
         ? body.regions.map((region) => [region.name, region.color, region.offices || [], region.x, region.y])
         : PALANTIR_REGIONS;

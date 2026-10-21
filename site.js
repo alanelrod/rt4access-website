@@ -86,7 +86,7 @@ document.addEventListener("click", (event) => {
     window.rt4Track("contact_request", { method: "pricing", plan: "pilot" });
     return;
   }
-  if (label === "Explore Company Maps") {
+  if (label === "Explore Free Maps" || label === "Explore Company Maps") {
     window.rt4Track("demo_click", { demo_name: "explore_company_maps" });
     return;
   }
