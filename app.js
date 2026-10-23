@@ -674,18 +674,25 @@
       const radius = 110 + ring * 48;
       slice.forEach((row, index) => {
         const spot = polar(sun.x, sun.y, radius, index, slice.length);
-        spot.r = row.lead ? 14 : 7;
+        spot.r = row.lead || row.photo ? 14 : 7;
         spot.person = row;
         spots.push(spot);
       });
       cursor += capacity;
       ring += 1;
     }
-    const moons = spots.map((spot) => {
-      const name = spot.person.lead ? `<text x="${spot.x}" y="${spot.y + spot.r + 12}" text-anchor="middle" fill="#e8eef7" font-size="10">${esc(clip(spot.person.name, 16))}</text>` : "";
-      return `<g data-person="${attr(spot.person.name)}" role="button" tabindex="0" style="cursor:pointer">
+    const moons = spots.map((spot, index) => {
+      const person = spot.person;
+      const name = person.lead || person.photo ? `<text x="${spot.x}" y="${spot.y + spot.r + 12}" text-anchor="middle" fill="#e8eef7" font-size="10">${esc(clip(person.name, 16))}</text>` : "";
+      const photo = person.photo
+        ? `<clipPath id="face-${index}"><circle cx="${spot.x}" cy="${spot.y}" r="${spot.r - 1}"></circle></clipPath>
+          <image href="${attr(person.photo)}" x="${spot.x - spot.r}" y="${spot.y - spot.r}" width="${spot.r * 2}" height="${spot.r * 2}" clip-path="url(#face-${index})" preserveAspectRatio="xMidYMid slice"></image>
+          <title>${esc(photoCredit(person))}</title>`
+        : "";
+      return `<g data-person="${attr(person.name)}" role="button" tabindex="0" style="cursor:pointer">
         <circle cx="${spot.x}" cy="${spot.y}" r="${spot.r + 6}" fill="transparent"></circle>
-        <circle cx="${spot.x}" cy="${spot.y}" r="${spot.r}" fill="#0b1220" stroke="${spot.person.lead ? "#f8fafc" : "#60a5fa"}"></circle>
+        <circle cx="${spot.x}" cy="${spot.y}" r="${spot.r}" fill="#0b1220" stroke="${person.lead ? "#f8fafc" : "#60a5fa"}"></circle>
+        ${photo}
         ${name}
       </g>`;
     }).join("");
@@ -744,6 +751,9 @@
     }).join("");
     const core = planet(mapName, { x: sun.x, y: sun.y, r: 46 }, orbitPeople.length, "#f8fafc", "", true, true);
     return solarFrame(width, height, "Function clusters", orbitRing(sun.x, sun.y, orbit, "#38bdf8") + moons + core);
+  }
+  function photoCredit(row) {
+    return ["Photo: " + (row.photo_credit || "Wikimedia Commons"), row.photo_license].filter(Boolean).join(" · ");
   }
   function teamName(row) {
     const label = String(row.team || "").trim();
@@ -889,7 +899,17 @@
     if (person) {
       const found = orbitPeople.find((row) => row.name === person.dataset.person);
       const box = document.getElementById("orbit-detail");
-      if (box && found) box.textContent = [found.name, found.title, found.office].filter(Boolean).join(" · ");
+      if (box && found) {
+        box.textContent = [found.name, found.title, found.office].filter(Boolean).join(" · ");
+        if (found.photo) {
+          const credit = document.createElement("a");
+          credit.href = found.photo_source;
+          credit.target = "_blank";
+          credit.rel = "noopener";
+          credit.textContent = photoCredit(found);
+          box.append(document.createElement("br"), credit);
+        }
+      }
       trackMap("person");
     }
   }
