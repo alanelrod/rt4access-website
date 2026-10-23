@@ -696,6 +696,55 @@
     const outer = 110 + Math.max(0, ring - 1) * 48;
     return solarFrame(width, Math.max(height, outer * 2 + 80), title, rings + moons + core);
   }
+  const FUNCTIONS = [
+    ["Leadership", /\b(chief|co-?founder|founder|president|ceo|cto|cfo|coo|vice president|vp|svp|evp|general manager)\b/],
+    ["Recruiting", /\b(recruit\w*|talent|sourcer)\b/],
+    ["AI tutors", /\btutors?\b/],
+    ["Research", /\b(research\w*|scientist|science|alignment|interpretability)\b/],
+    ["Forward deployed", /\b(forward deployed|field|deployments?|deployed|applied ai)\b/],
+    ["Go-to-market", /\b(gtm|sales|account|accounts|enterprise|customer|client|partner\w*|business development|solutions|marketing|brand|growth|revenue|commercial|communications|go-to-market)\b/],
+    ["Product & design", /\b(product|design\w*|ux|ui)\b/],
+    ["Engineering", /\b(engineer\w*|technical staff|mts|developer|architect|software|firmware|hardware|technician|robotics|infrastructure|security|data|machine learning|ml)\b/],
+    ["Operations", /\b(operations|ops|program|project|supply|manufacturing|production|logistics|facilities|quality|buyer|procurement|sourcing|assembly)\b/],
+    ["Finance & legal", /\b(finance|financial|accounting|accountant|counsel|legal|compliance|policy|tax|treasury|treasurer|contracts?|investor)\b/],
+    ["People", /\b(people|hr|hrbp|human resources|workplace|executive assistant)\b/],
+  ];
+  const TEAM_FUNCTIONS = { "Executive": "Leadership", "Recruiting": "Recruiting", "Forward deployed": "Forward deployed", "Engineering managers": "Engineering" };
+  function functionOf(row) {
+    const team = TEAM_FUNCTIONS[String(row.team || "").trim()];
+    if (team) return team;
+    const title = String(row.title || "").toLowerCase();
+    const hit = FUNCTIONS.find(([, pattern]) => pattern.test(title));
+    return hit ? hit[0] : "Other";
+  }
+  function hasPlaces(people) {
+    return people.some((row) => row.office || row.place || row.location);
+  }
+  function functionBuckets(people) {
+    const buckets = new Map();
+    people.forEach((row) => {
+      const label = functionOf(row);
+      const list = buckets.get(label) || [];
+      list.push(row);
+      buckets.set(label, list);
+    });
+    return buckets;
+  }
+  function functionSolar(buckets) {
+    const width = 1100;
+    const height = 760;
+    const sun = { x: width / 2, y: height / 2 };
+    const ordered = [...buckets.keys()].sort((a, b) => (a === "Other") - (b === "Other") || buckets.get(b).length - buckets.get(a).length);
+    const orbit = 260;
+    const moons = ordered.map((name, index) => {
+      const rows = buckets.get(name);
+      const spot = polar(sun.x, sun.y, orbit, index, ordered.length);
+      spot.r = massRadius(rows.length) + 4;
+      return planet(name, spot, rows.length, "#38bdf8", `data-function="${attr(name)}" role="button" tabindex="0"`, true, false);
+    }).join("");
+    const core = planet(mapName, { x: sun.x, y: sun.y, r: 46 }, orbitPeople.length, "#f8fafc", "", true, true);
+    return solarFrame(width, height, "Function clusters", orbitRing(sun.x, sun.y, orbit, "#38bdf8") + moons + core);
+  }
   function teamName(row) {
     const label = String(row.team || "").trim();
     if (!label || /^(no team|no public team|none|n\/a|other)$/i.test(label)) return "";
@@ -750,13 +799,20 @@
     const regionStep = orbitTrail.find((step) => step.startsWith("region:"));
     const officeStep = orbitTrail.find((step) => step.startsWith("office:"));
     const teamStep = orbitTrail.find((step) => step.startsWith("team:"));
-    const stepLabel = (step) => step.replace(/^(region|office|team):/, "");
+    const functionStep = orbitTrail.find((step) => step.startsWith("function:"));
+    const placed = hasPlaces(orbitPeople);
+    const stepLabel = (step) => step.replace(/^(region|office|team|function):/, "");
     const crumbs = [`<button type="button" data-crumb="-1" class="${orbitTrail.length ? "" : "on"}">${esc(mapName)}</button>`]
       .concat(orbitTrail.map((step, index) => `<button type="button" data-crumb="${index}" class="${index === orbitTrail.length - 1 ? "on" : ""}">${esc(stepLabel(step))}</button>`))
       .join("");
     let chart = "";
     let detail = "";
-    if (officeStep && teamStep) {
+    if (!placed) {
+      const byFunction = functionBuckets(orbitPeople);
+      chart = functionStep
+        ? peopleSolar(functionStep.slice(9), mapName, byFunction.get(functionStep.slice(9)) || [])
+        : functionSolar(byFunction);
+    } else if (officeStep && teamStep) {
       const office = officeStep.slice(7);
       const team = teamStep.slice(5);
       const members = (buckets.get(office) || []).filter((row) => teamName(row) === team);
@@ -773,7 +829,9 @@
       chart = companySolar(buckets, groups, elsewhere);
     }
     const withOffice = orbitPeople.filter((row) => row.office && row.office !== "Headquarters").length;
-    const note = mapNote || `${orbitPeople.length.toLocaleString()} people on the public map. A city without a listed office still sits in its region. A shared office is not a reporting line. ${withOffice.toLocaleString()} match a listed office.`;
+    const note = !placed
+      ? `${orbitPeople.length.toLocaleString()} sourced profiles. No public location is listed for these profiles, so they are grouped by function from their titles. A shared function is not a reporting line.`
+      : mapNote || `${orbitPeople.length.toLocaleString()} people on the public map. A city without a listed office still sits in its region. A shared office is not a reporting line. ${withOffice.toLocaleString()} match a listed office.`;
     host.innerHTML = `<p class="pyramid-note">${esc(note)}</p>
       <div class="crumb">${crumbs}</div>${chart}<div class="pyramid-detail" id="orbit-detail">${detail}</div>`;
   }
@@ -799,6 +857,13 @@
       orbitTrail = ["region:" + geo.dataset.geo];
       drawOrbit();
       trackMap("region", geo.dataset.geo);
+      return;
+    }
+    const group = event.target.closest("[data-function]");
+    if (group) {
+      orbitTrail = ["function:" + group.dataset.function];
+      drawOrbit();
+      trackMap("function", group.dataset.function);
       return;
     }
     const office = event.target.closest("[data-office]");
