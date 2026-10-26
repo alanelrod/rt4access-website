@@ -134,7 +134,7 @@ document.addEventListener("click", (event) => {
       if (!fieldOk("[name=organization]", "Add your organization.")) return;
     }
     if (step === 2 && !form.querySelector("[name=plan]:checked")) {
-      showError("Choose a pilot plan.");
+      showError("Choose an RT4Access plan.");
       return;
     }
     show(step + 1);

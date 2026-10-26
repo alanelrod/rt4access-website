@@ -8,7 +8,7 @@ const ORIGINS = new Set([
   "http://127.0.0.1:8754",
   "http://localhost:8754",
 ]);
-const PLANS = new Set(["frontier", "frontier-plus", "enterprise", "strategic", "starter", "growth", "scale"]);
+const PLANS = new Set(["free", "pro", "teams", "frontier", "frontier-plus", "enterprise", "strategic", "starter", "growth", "scale"]);
 const COMPANIES = ["anduril", "anthropic", "mistral", "openai", "palantir", "xai"];
 const COMPANY_SET = new Set(COMPANIES);
 const hits = new Map();
@@ -91,7 +91,7 @@ function requestFrom(body) {
   if (name.length < 2) return { error: "Add your name." };
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return { error: "Add a valid email." };
   if (organization.length < 2) return { error: "Add your organization." };
-  if (!PLANS.has(plan)) return { error: "Choose a pilot plan." };
+  if (!PLANS.has(plan)) return { error: "Choose an RT4Access plan." };
   if (!companies.length && other.length < 2) return { error: "Choose the companies for this pilot." };
   return { name, email, organization, plan, companies, other };
 }

@@ -166,13 +166,22 @@ nav.site-nav {
 }
 .concept-grid, .surface-grid, .program-grid, .insight-grid, .price-grid, .motion { display: grid; gap: 14px; margin-top: 48px; }
 .price-grid { grid-template-columns: repeat(4, 1fr); }
+.price-grid--3 { grid-template-columns: repeat(3, 1fr); }
+.price-group {
+  margin: 36px 0 0; font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em;
+  text-transform: uppercase; color: var(--muted);
+}
 .motion { grid-template-columns: repeat(4, 1fr); list-style: none; padding: 0; }
 .price-card {
   background: var(--panel-data); border: 1px solid var(--border);
   border-radius: var(--radius); padding: 28px 26px;
 }
 .price-card h3 { font-size: 14px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); font-weight: 600; }
-.price-card .price { margin: 14px 0 8px; font-size: clamp(28px, 2.6vw, 40px); font-weight: 600; letter-spacing: -0.04em; color: var(--bright); line-height: 1; }
+.price-card h3.tier-name, .universe h3.tier-name {
+  text-transform: none; letter-spacing: -0.02em; font-size: 16px; line-height: 1.35; font-weight: 600;
+}
+.price-card .price { margin: 14px 0 8px; font-size: clamp(26px, 2.4vw, 36px); font-weight: 600; letter-spacing: -0.04em; color: var(--bright); line-height: 1; }
+.price-card .per { font-size: 0.42em; letter-spacing: 0; color: var(--muted); font-weight: 600; }
 .price-card p { color: var(--muted); }
 .price-card a {
   display: inline-block; margin-top: 18px; font-family: var(--mono); font-size: 11px;
