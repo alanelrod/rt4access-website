@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>RT4Access — 7AI brief</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #1c1915;
+      --muted: #5c564c;
+      --line: #e4dfd6;
+      --paper: #f7f4ee;
+      --card: #fff;
+      --accent: #1f4d3a;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font: 15px/1.45 "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+      color: var(--ink);
+      background: var(--paper);
+    }
+    header, main, .gate { width: min(1120px, calc(100% - 32px)); margin: 0 auto; }
+    header { padding: 28px 0 8px; display: flex; justify-content: space-between; gap: 16px; align-items: end; }
+    .kicker { letter-spacing: 0.08em; text-transform: uppercase; font: 600 12px/1.2 ui-sans-serif, system-ui, sans-serif; color: var(--accent); }
+    h1 { font-size: 34px; font-weight: 600; margin: 8px 0; }
+    .lede { max-width: 68ch; color: var(--muted); margin: 0 0 18px; }
+    .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+    .stat, .panel, .card { background: var(--card); border: 1px solid var(--line); border-radius: 8px; }
+    .stat { padding: 12px 14px; }
+    .stat b { display: block; font-size: 26px; font-weight: 600; }
+    main { padding: 18px 0 48px; }
+    .panel, .card { padding: 14px 16px 16px; }
+    .card { width: min(420px, 100%); margin: 48px auto; }
+    h2 { font-size: 18px; margin: 0 0 6px; }
+    .note, .error { color: var(--muted); font-size: 13px; margin: 0 0 12px; }
+    .error { color: #8a4b12; min-height: 1.2em; }
+    label { display: block; font: 13px/1.2 ui-sans-serif, system-ui, sans-serif; margin: 10px 0 4px; }
+    .bars { display: grid; gap: 6px; }
+    .bar { display: grid; grid-template-columns: minmax(108px, 150px) 1fr 20px; gap: 8px; align-items: center; font: 13px/1.2 ui-sans-serif, system-ui, sans-serif; }
+    .track { height: 8px; background: #efeae2; border-radius: 99px; }
+    .fill { height: 8px; background: var(--accent); border-radius: 99px; }
+    .controls { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 14px 0; }
+    input, button {
+      font: 14px/1.2 ui-sans-serif, system-ui, sans-serif;
+      border: 1px solid var(--line);
+      background: var(--card);
+      color: var(--ink);
+      border-radius: 6px;
+    }
+    input { padding: 8px 10px; width: 100%; }
+    .controls input { width: auto; min-width: 220px; }
+    button { padding: 8px 12px; cursor: pointer; }
+    button[aria-pressed="true"], button.primary { background: var(--accent); color: #fff; border-color: var(--accent); }
+    table { width: 100%; border-collapse: collapse; background: var(--card); }
+    th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+    th { font: 600 12px/1.2 ui-sans-serif, system-ui, sans-serif; color: var(--muted); position: sticky; top: 0; background: #fbf9f5; }
+    td a { color: var(--accent); }
+    .missing, .count { color: var(--muted); }
+    .count { font: 13px/1.3 ui-sans-serif, system-ui, sans-serif; }
+    .hidden { display: none; }
+    @media (max-width: 800px) {
+      .stats { grid-template-columns: 1fr 1fr; }
+      .bar { grid-template-columns: 108px 1fr 20px; }
+      table { display: block; overflow-x: auto; }
+    }
+  </style>
+</head>
+<body>
+  <form class="card" id="gate">
+    <div class="kicker">RT4Access</div>
+    <h1>7AI brief</h1>
+    <p class="note">This page stays closed until you sign in.</p>
+    <label for="user">Username</label>
+    <input id="user" name="username" autocomplete="username" required>
+    <label for="pass">Password</label>
+    <input id="pass" name="password" type="password" autocomplete="current-password" required>
+    <p class="error" id="error" role="status"></p>
+    <button class="primary" type="submit">Sign in</button>
+  </form>
+
+  <div id="app" class="hidden">
+    <header>
+      <div>
+        <div class="kicker">RT4Access · private brief</div>
+        <h1>7AI workforce</h1>
+      </div>
+      <button type="button" id="signout">Sign out</button>
+    </header>
+    <main>
+      <p class="lede" id="lede"></p>
+      <div class="stats" id="stats"></div>
+      <section class="panel">
+        <h2>Named immediate prior employers</h2>
+        <p class="note">People with a sourced employer immediately before 7AI. Employers shown have two or more of those records. This is not a companywide hiring total.</p>
+        <div class="bars" id="bars"></div>
+      </section>
+      <div class="controls">
+        <input id="q" type="search" placeholder="Search name, title, or prior" aria-label="Search the roster">
+        <div id="filters"></div>
+        <span class="count" id="shown"></span>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Title</th>
+            <th>Function</th>
+            <th>Place</th>
+            <th>Evidence</th>
+            <th>Immediate prior</th>
+            <th>LinkedIn</th>
+          </tr>
+        </thead>
+        <tbody id="rows"></tbody>
+      </table>
+    </main>
+  </div>
+  <script>
+    const EVIDENCE = {
+      profile: "Profile opened",
+      "org-chart": "Org chart",
+      "public-post": "Public post",
+      directory: "Directory"
+    };
+    const FUNCTIONS = ["all", "engineering", "security", "gtm", "product", "recruiting", "leadership", "other"];
+    let people = [];
+    let active = "all";
+
+    function fnLabel(value) {
+      return value === "gtm" ? "GTM" : value.charAt(0).toUpperCase() + value.slice(1);
+    }
+
+    function text(value) {
+      return String(value ?? "").replace(/[&<>"']/g, (ch) => ({
+        "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+      }[ch]));
+    }
+
+    function renderStats(data) {
+      const linked = people.filter((person) => person.linkedin).length;
+      const target = data.coverage.target_count;
+      const cards = [
+        [String(people.length), "Sourced current employees"],
+        ["68.5%", "Of the 178 LinkedIn profiles"],
+        [String(target - people.length), "Names still needed to clear 80%"],
+        [String(linked), "Individual LinkedIn URLs attached"]
+      ];
+      document.getElementById("lede").textContent =
+        "122 sourced employees against the October 26, 2026 LinkedIn profile count of 178. 80% of 178 is 142.4, so 142 people would be 79.8%. The production target is 143 people, 80.3%. LinkedIn is attached only where a profile URL was opened or recorded.";
+      document.getElementById("stats").innerHTML = cards.map(([value, label]) =>
+        `<div class="stat"><b>${text(value)}</b><span>${text(label)}</span></div>`
+      ).join("");
+    }
+
+    function renderBars() {
+      const counts = {};
+      for (const person of people) {
+        if (!person.prior_employer) continue;
+        counts[person.prior_employer] = (counts[person.prior_employer] || 0) + 1;
+      }
+      const rows = Object.entries(counts).filter(([, count]) => count >= 2).sort((a, b) => b[1] - a[1]);
+      const max = rows[0] ? rows[0][1] : 1;
+      document.getElementById("bars").innerHTML = rows.map(([name, count]) =>
+        `<div class="bar"><span>${text(name)}</span><div class="track"><div class="fill" style="width:${(count / max) * 100}%"></div></div><span>${count}</span></div>`
+      ).join("");
+    }
+
+    function visible() {
+      const query = document.getElementById("q").value.trim().toLowerCase();
+      return people.filter((person) => {
+        if (active !== "all" && person.function !== active) return false;
+        if (!query) return true;
+        const hay = [person.name, person.title, person.prior_employer, person.place].join(" ").toLowerCase();
+        return hay.includes(query);
+      });
+    }
+
+    function renderRows() {
+      const list = visible();
+      document.getElementById("shown").textContent = `${list.length} shown`;
+      document.getElementById("rows").innerHTML = list.map((person) => {
+        const link = person.linkedin
+          ? `<a href="${text(person.linkedin)}" target="_blank" rel="noopener noreferrer">Profile</a>`
+          : `<span class="missing">Not on file</span>`;
+        return `<tr>
+          <td>${text(person.name)}</td>
+          <td>${text(person.title)}</td>
+          <td>${text(fnLabel(person.function))}</td>
+          <td>${text(person.place || "Elsewhere")}</td>
+          <td>${text(EVIDENCE[person.confidence] || person.confidence)}</td>
+          <td>${text(person.prior_employer || "")}</td>
+          <td>${link}</td>
+        </tr>`;
+      }).join("");
+    }
+
+    function renderFilters() {
+      document.getElementById("filters").innerHTML = FUNCTIONS.map((value) =>
+        `<button type="button" data-fn="${value}" aria-pressed="${value === active}">${value === "all" ? "All" : fnLabel(value)}</button>`
+      ).join("");
+      document.getElementById("filters").addEventListener("click", (event) => {
+        const button = event.target.closest("button");
+        if (!button) return;
+        active = button.dataset.fn;
+        for (const node of document.querySelectorAll("#filters button")) {
+          node.setAttribute("aria-pressed", node === button ? "true" : "false");
+        }
+        renderRows();
+      });
+    }
+
+    function openBrief(data) {
+      people = data.people.slice().sort((a, b) => a.name.localeCompare(b.name));
+      document.getElementById("gate").classList.add("hidden");
+      document.getElementById("app").classList.remove("hidden");
+      renderStats(data);
+      renderBars();
+      renderFilters();
+      renderRows();
+      document.getElementById("q").addEventListener("input", renderRows);
+    }
+
+    async function unlock(username, password) {
+      if (username !== "alanelrod") throw new Error("denied");
+      const vault = await fetch("vault.json", { cache: "no-store" }).then((response) => {
+        if (!response.ok) throw new Error("missing");
+        return response.json();
+      });
+      const salt = Uint8Array.from(atob(vault.salt), (c) => c.charCodeAt(0));
+      const iv = Uint8Array.from(atob(vault.iv), (c) => c.charCodeAt(0));
+      const data = Uint8Array.from(atob(vault.data), (c) => c.charCodeAt(0));
+      const material = await crypto.subtle.importKey(
+        "raw",
+        new TextEncoder().encode(password),
+        "PBKDF2",
+        false,
+        ["deriveKey"]
+      );
+      const key = await crypto.subtle.deriveKey(
+        { name: "PBKDF2", salt, iterations: vault.iterations, hash: "SHA-256" },
+        material,
+        { name: "AES-GCM", length: 256 },
+        false,
+        ["decrypt"]
+      );
+      const clear = await crypto.subtle.decrypt({ name: "AES-GCM", iv }, key, data);
+      return JSON.parse(new TextDecoder().decode(clear));
+    }
+
+    document.getElementById("gate").addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const error = document.getElementById("error");
+      error.textContent = "";
+      const username = document.getElementById("user").value.trim();
+      const password = document.getElementById("pass").value;
+      document.getElementById("pass").value = "";
+      try {
+        openBrief(await unlock(username, password));
+      } catch {
+        error.textContent = "That sign-in did not open this brief.";
+      }
+    });
+
+    document.getElementById("signout").addEventListener("click", () => {
+      people = [];
+      location.reload();
+    });
+  </script>
+</body>
+</html>
