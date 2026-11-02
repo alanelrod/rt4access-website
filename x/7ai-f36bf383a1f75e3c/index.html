@@ -133,6 +133,15 @@
       return value === "gtm" ? "GTM" : value.charAt(0).toUpperCase() + value.slice(1);
     }
 
+    function firstName(name) {
+      const honorific = /^(dr|mr|mrs|ms|mx|prof|adv|sir|dame)\.?$/i;
+      const parts = String(name || "").trim().split(/\s+/).filter(Boolean);
+      let word = parts.find((part) => !honorific.test(part)) || parts[0] || "";
+      word = word.replace(/^[^\p{L}\p{N}]+|[^\p{L}\p{N}'’.-]+$/gu, "");
+      if (word && word === word.toUpperCase() && /[A-Z]/.test(word)) word = word.charAt(0) + word.slice(1).toLowerCase();
+      return word;
+    }
+
     function text(value) {
       return String(value ?? "").replace(/[&<>"']/g, (ch) => ({
         "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
@@ -186,7 +195,7 @@
           ? `<a href="${text(person.linkedin)}" target="_blank" rel="noopener noreferrer">Profile</a>`
           : `<span class="missing">Not on file</span>`;
         return `<tr>
-          <td>${text(person.name)}</td>
+          <td>${text(firstName(person.name))}</td>
           <td>${text(person.title)}</td>
           <td>${text(fnLabel(person.function))}</td>
           <td>${text(person.place || "Elsewhere")}</td>

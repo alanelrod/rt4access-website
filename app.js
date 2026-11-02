@@ -3,6 +3,14 @@
   const esc = (s) => String(s || "").replace(/[<>&]/g, (ch) => ({ "<": "&lt;", ">": "&gt;", "&": "&amp;" }[ch]));
   const attr = (s) => esc(s).replace(/"/g, "&quot;");
   const clip = (s, n) => (String(s || "").length > n ? String(s).slice(0, n - 1) + "…" : String(s || ""));
+  const honorific = /^(dr|mr|mrs|ms|mx|prof|adv|sir|dame)\.?$/i;
+  function firstName(name) {
+    const parts = String(name || "").trim().split(/\s+/).filter(Boolean);
+    let word = parts.find((part) => !honorific.test(part)) || parts[0] || "";
+    word = word.replace(/^[^\p{L}\p{N}]+|[^\p{L}\p{N}'’.-]+$/gu, "");
+    if (word && word === word.toUpperCase() && /[A-Z]/.test(word)) word = word.charAt(0) + word.slice(1).toLowerCase();
+    return word;
+  }
 
   const rowsEl = document.querySelector("#rows");
   const note = document.querySelector("#note");
@@ -683,7 +691,7 @@
     }
     const moons = spots.map((spot, index) => {
       const person = spot.person;
-      const name = person.lead || person.photo ? `<text x="${spot.x}" y="${spot.y + spot.r + 12}" text-anchor="middle" fill="#e8eef7" font-size="10">${esc(clip(person.name, 16))}</text>` : "";
+      const name = person.lead || person.photo ? `<text x="${spot.x}" y="${spot.y + spot.r + 12}" text-anchor="middle" fill="#e8eef7" font-size="10">${esc(firstName(person.name))}</text>` : "";
       const photo = person.photo
         ? `<clipPath id="face-${index}"><circle cx="${spot.x}" cy="${spot.y}" r="${spot.r - 1}"></circle></clipPath>
           <image href="${attr(person.photo)}" x="${spot.x - spot.r}" y="${spot.y - spot.r}" width="${spot.r * 2}" height="${spot.r * 2}" clip-path="url(#face-${index})" preserveAspectRatio="xMidYMid slice"></image>
@@ -900,7 +908,7 @@
       const found = orbitPeople.find((row) => row.name === person.dataset.person);
       const box = document.getElementById("orbit-detail");
       if (box && found) {
-        box.textContent = [found.name, found.title, found.office].filter(Boolean).join(" · ");
+        box.textContent = [firstName(found.name), found.title, found.office].filter(Boolean).join(" · ");
         if (found.photo) {
           const credit = document.createElement("a");
           credit.href = found.photo_source;
