@@ -18,7 +18,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css?v=13">
-  <link rel="stylesheet" href="demo.css?v=4">
+  <link rel="stylesheet" href="demo.css?v=5">
 </head>
 <body>
   <nav class="site-nav">
@@ -39,21 +39,8 @@
     </div>
   </nav>
 
-  <section class="live3" id="demo" aria-label="Live Access views">
-    <div class="live3-bar">
-      <button type="button" class="is-on" data-live="view" data-src="https://rt4access-production.up.railway.app/map">Market</button>
-      <button type="button" data-live="view" data-src="https://rt4access-production.up.railway.app/universe">Universe</button>
-      <button type="button" data-live="view" data-src="https://rt4access-production.up.railway.app/map/openai">Company</button>
-      <span class="live3-companies">
-        <button type="button" data-live="company" data-src="https://rt4access-production.up.railway.app/map/openai">OpenAI</button>
-        <button type="button" data-live="company" data-src="https://rt4access-production.up.railway.app/map/palantir">Palantir</button>
-        <button type="button" data-live="company" data-src="https://rt4access-production.up.railway.app/map/anthropic">Anthropic</button>
-        <button type="button" data-live="company" data-src="https://rt4access-production.up.railway.app/map/xai">xAI</button>
-        <button type="button" data-live="company" data-src="https://rt4access-production.up.railway.app/map/anduril">Anduril</button>
-        <button type="button" data-live="company" data-src="https://rt4access-production.up.railway.app/map/mistral">Mistral</button>
-      </span>
-    </div>
-    <iframe id="live3-frame" title="RT4Access live view" src="https://rt4access-production.up.railway.app/map"></iframe>
+  <section class="live3" id="demo" aria-label="RT4Access universe">
+    <iframe title="RT4Access universe" src="https://rt4access-production.up.railway.app/universe?site=1"></iframe>
   </section>
 
   <section id="hero">
@@ -416,7 +403,6 @@
     <div class="footer-legal">© 2026 RT4Access. All rights reserved.</div>
   </footer>
 
-  <script src="demo.js?v=1"></script>
   <script src="site.js?v=6"></script>
   <script src="app.js?v=10"></script>
 </body>
