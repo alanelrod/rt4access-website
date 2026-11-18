@@ -18,6 +18,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css?v=13">
+  <link rel="stylesheet" href="demo.css?v=1">
 </head>
 <body>
   <nav class="site-nav">
@@ -37,6 +38,55 @@
       <a href="#pilot" class="nav-cta">Request a 30-Day Pilot</a>
     </div>
   </nav>
+
+  <section class="wire" id="demo" aria-label="Live wire demo">
+    <aside class="wire-side">
+      <div class="wire-brand">
+        <img src="assets/brand/rt4access.png?v=2" alt="">
+        <span><strong>Solis</strong><small>RT Platform</small></span>
+      </div>
+      <div class="wire-label">Access</div>
+      <button class="wire-nav is-on" type="button" data-wire="market">Market</button>
+      <button class="wire-nav" type="button" data-wire="mine">My View</button>
+    </aside>
+    <div class="wire-main">
+      <div class="wire-view is-on" data-wire-view="market">
+        <div class="wire-head">
+          <div>
+            <h2>Market</h2>
+            <p>Six mapped companies. The people counts are the mapping figures on each orbit.</p>
+          </div>
+          <div class="wire-count">6 companies · 23,292 people</div>
+        </div>
+        <div class="wire-grid">
+          <article class="wire-card"><strong>Anduril</strong><span>5,044 people</span><p>Verified 8,000+ · guess 9,400</p></article>
+          <article class="wire-card"><strong>Anthropic</strong><span>3,528 people</span><p>Verified 3,500+ · guess 4,392</p></article>
+          <article class="wire-card"><strong>Mistral AI</strong><span>1,034 people</span><p>Verified 1,000 · guess 1,759</p></article>
+          <article class="wire-card"><strong>OpenAI</strong><span>7,286 people</span><p>Verified 4,500 · guess 8,484</p></article>
+          <article class="wire-card"><strong>Palantir</strong><span>3,532 people</span><p>Verified 4,401 · guess 5,894</p></article>
+          <article class="wire-card"><strong>xAI</strong><span>2,868 people</span><p>No verified count · guess 6,793</p></article>
+        </div>
+      </div>
+      <div class="wire-view" data-wire-view="mine">
+        <div class="wire-head">
+          <div>
+            <h2>My View</h2>
+            <p>The accounts on your working list, not the full market.</p>
+          </div>
+          <div class="wire-count">4 accounts</div>
+        </div>
+        <table class="wire-table">
+          <thead><tr><th>Account</th><th>Why it is here</th><th>Next</th></tr></thead>
+          <tbody>
+            <tr><td>OpenAI</td><td>Largest mapped team in the batch</td><td class="wire-pill">Work the orbit</td></tr>
+            <tr><td>Anthropic</td><td>Second pass on verified people</td><td class="wire-pill">Review roles</td></tr>
+            <tr><td>Palantir</td><td>Office map is the first company map</td><td class="wire-pill">Open offices</td></tr>
+            <tr><td>Anduril</td><td>Held for a pilot shortlist</td><td class="wire-pill">Build shortlist</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
 
   <section id="hero">
     <div class="hero-grid">
@@ -398,6 +448,7 @@
     <div class="footer-legal">© 2026 RT4Access. All rights reserved.</div>
   </footer>
 
+  <script src="demo.js?v=1"></script>
   <script src="site.js?v=6"></script>
   <script src="app.js?v=10"></script>
 </body>
