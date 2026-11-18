@@ -18,7 +18,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css?v=13">
-  <link rel="stylesheet" href="demo.css?v=3">
+  <link rel="stylesheet" href="demo.css?v=4">
 </head>
 <body>
   <nav class="site-nav">
@@ -39,34 +39,21 @@
     </div>
   </nav>
 
-  <section class="wire" id="demo" aria-label="Live maps">
-    <aside class="wire-side">
-      <div class="wire-brand">
-        <img src="assets/brand/rt4access.png?v=2" alt="">
-        <span><strong>Solis</strong><small>RT Platform</small></span>
-      </div>
-      <div class="wire-label">Access</div>
-      <a class="wire-nav is-on" href="https://rt4access-production.up.railway.app/map">Market</a>
-      <a class="wire-nav" href="https://rt4access-production.up.railway.app/verticals/rt4access/leads">My View</a>
-      <a class="wire-nav" href="https://rt4access-production.up.railway.app/universe">Universe</a>
-    </aside>
-    <div class="wire-main">
-      <div class="wire-head">
-        <div>
-          <h2>Market</h2>
-          <p>Open a company to see its live map.</p>
-        </div>
-        <div class="wire-count">6 companies · 23,292 people</div>
-      </div>
-      <div class="wire-grid">
-        <a class="wire-card" href="https://rt4access-production.up.railway.app/map/anduril"><strong>Anduril</strong><span>5,044 people</span><p>Verified 8,000+ · guess 9,400</p></a>
-        <a class="wire-card" href="https://rt4access-production.up.railway.app/map/anthropic"><strong>Anthropic</strong><span>3,528 people</span><p>Verified 3,500+ · guess 4,392</p></a>
-        <a class="wire-card" href="https://rt4access-production.up.railway.app/map/mistral"><strong>Mistral AI</strong><span>1,034 people</span><p>Verified 1,000 · guess 1,759</p></a>
-        <a class="wire-card" href="https://rt4access-production.up.railway.app/map/openai"><strong>OpenAI</strong><span>7,286 people</span><p>Verified 4,500 · guess 8,484</p></a>
-        <a class="wire-card" href="https://rt4access-production.up.railway.app/map/palantir"><strong>Palantir</strong><span>3,532 people</span><p>Verified 4,401 · guess 5,894</p></a>
-        <a class="wire-card" href="https://rt4access-production.up.railway.app/map/xai"><strong>xAI</strong><span>2,868 people</span><p>No verified count · guess 6,793</p></a>
-      </div>
+  <section class="live3" id="demo" aria-label="Live Access views">
+    <div class="live3-bar">
+      <button type="button" class="is-on" data-live="view" data-src="https://rt4access-production.up.railway.app/map">Market</button>
+      <button type="button" data-live="view" data-src="https://rt4access-production.up.railway.app/universe">Universe</button>
+      <button type="button" data-live="view" data-src="https://rt4access-production.up.railway.app/map/openai">Company</button>
+      <span class="live3-companies">
+        <button type="button" data-live="company" data-src="https://rt4access-production.up.railway.app/map/openai">OpenAI</button>
+        <button type="button" data-live="company" data-src="https://rt4access-production.up.railway.app/map/palantir">Palantir</button>
+        <button type="button" data-live="company" data-src="https://rt4access-production.up.railway.app/map/anthropic">Anthropic</button>
+        <button type="button" data-live="company" data-src="https://rt4access-production.up.railway.app/map/xai">xAI</button>
+        <button type="button" data-live="company" data-src="https://rt4access-production.up.railway.app/map/anduril">Anduril</button>
+        <button type="button" data-live="company" data-src="https://rt4access-production.up.railway.app/map/mistral">Mistral</button>
+      </span>
     </div>
+    <iframe id="live3-frame" title="RT4Access live view" src="https://rt4access-production.up.railway.app/map"></iframe>
   </section>
 
   <section id="hero">
@@ -429,6 +416,7 @@
     <div class="footer-legal">© 2026 RT4Access. All rights reserved.</div>
   </footer>
 
+  <script src="demo.js?v=1"></script>
   <script src="site.js?v=6"></script>
   <script src="app.js?v=10"></script>
 </body>
